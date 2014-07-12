@@ -1,0 +1,13 @@
+{
+   "_id": "badge/autor",
+   "type": "badge",
+   "name": "Wohltäter",
+   "description": "Erstelle eine bestimmte Anzahl an öffentlichen Kartensätzen, die mindestens 5 Karten beinhalten",
+   "rank": {
+       "1": 15,
+       "2": 10,
+       "3": 3
+   },
+   "category": "set",
+   "unit": "Kartensätze"
+}

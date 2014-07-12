@@ -1,0 +1,13 @@
+{
+   "_id": "badge/stammgast",
+   "type": "badge",
+   "name": "Stammgast",
+   "description": "Besuche THMcards mehrere Tage am Stück und erhalte den Stammgast Badge!",
+   "rank": {
+       "1": 32,
+       "2": 20,
+       "3": 3
+   },
+   "category": "daily_login",
+   "unit": "Tage"
+}

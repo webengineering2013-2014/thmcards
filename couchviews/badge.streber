@@ -1,0 +1,13 @@
+{
+   "_id": "badge/streber",
+   "type": "badge",
+   "name": "Streber",
+   "description": "Lerne eine bestimmte Anzahl an unterschiedlichen Kartensätzen",
+   "rank": {
+       "1": 30,
+       "2": 15,
+       "3": 10
+   },
+   "category": "set",
+   "unit": "Kartensätze"
+}

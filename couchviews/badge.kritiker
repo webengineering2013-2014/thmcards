@@ -1,0 +1,13 @@
+{
+   "_id": "badge/kritiker",
+   "type": "badge",
+   "name": "Kritiker",
+   "description": "Bewerte und kommentiere Kartensätze anderer Lernenden. Die Kommentare müssen mindestens 80 Zeichen lang sein.",
+   "rank": {
+       "1": 50,
+       "2": 25,
+       "3": 10
+   },
+   "category": "set",
+   "unit": "Bewertungen"
+}
