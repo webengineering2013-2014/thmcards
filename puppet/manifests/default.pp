@@ -17,11 +17,21 @@ class thmcards {
     package { [ $installtools ] :
         require => Exec['update-pacman-mirrorlist']
     }
-    
+
+    # fix a problem with Jenkins Python Plugin, which tries to call python
+    # instead of python2
+    file { 'create-python2-link' :
+        path    => '/usr/bin/python',
+        ensure  => 'link',
+        target  => '/usr/bin/python2',
+        
+        require => Package[ $installtools ]
+    }
+
     exec { "configure-couchdb" :
         command => "python2 configure_couchdb.py",
 
-        require => Package[ $installtools ]
+        require => File['create-python2-link']
     }
 
     service { "init-couchdb":
