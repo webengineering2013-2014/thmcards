@@ -11,7 +11,8 @@ class thmcards {
         command => 'bash update_pacman_mirrorlist.sh'
     }
 
-    $installtools = [ "nodejs", "couchdb", "python2", "jenkins" ]
+    # libcups satisfies a dependency needed by jenkins
+    $installtools = [ "nodejs", "couchdb", "python2", "jre7-openjdk", "libcups" ]
     
     package { [ $installtools ] :
         require => Exec['update-pacman-mirrorlist']
@@ -46,33 +47,26 @@ class thmcards {
         require => Exec['check-couchdb-access']
     }
     
-    service { "init-jenkins":
-        name       => "jenkins",
-        ensure     => "running",
-        enable     => true,
-        hasrestart => true,
-        hasstatus  => true,
-        
-        require => Exec['create-views-in-couchdb']
-    }
-
-    exec { "check-jenkins-access" :
-        command => "python2 check_jenkins_access.py",
-
-        require => Service['init-jenkins']
-    }
-    
     exec { "npm-install" :
         cwd     => "/vagrant",
         command => "npm install",
 
-        require => Exec['check-jenkins-access']
+        require => Exec['create-views-in-couchdb']
     }
     
     exec { "npm-install-forever" :
         command => "npm -g install forever",
 
         require => Exec['npm-install']
+    }
+
+    file { "create-jenkins-directory" :
+        path   => "/home/vagrant/jenkins",
+        ensure => "directory",
+        owner  => "vagrant",
+        group  => "users",
+        
+        require => Exec['npm-install-forever']
     }
     
     file { 'create-motd':
@@ -84,7 +78,7 @@ class thmcards {
         owner  => 'root',
         source => 'puppet:///modules/motddir/motd',
         
-        require => Exec['npm-install-forever']
+        require => File['create-jenkins-directory']
     }
 
 }
