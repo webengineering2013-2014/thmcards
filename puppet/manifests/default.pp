@@ -6,16 +6,21 @@ Exec {
 
 
 class thmcards {
-    
+
     exec { "update-pacman-mirrorlist" :
         command => 'bash update_pacman_mirrorlist.sh'
     }
 
-    # libcups satisfies a dependency needed by jenkins
-    $installtools = [ "nodejs", "couchdb", "python2", "jre7-openjdk", "libcups" ]
-    
+    $installtools = [ "couchdb", "firefox", "jenkins", "junit", "nodejs", "python2-pip", "python2-pexpect", "tigervnc" ]
+
     package { [ $installtools ] :
         require => Exec['update-pacman-mirrorlist']
+    }
+
+    exec { "install-cctrl" :
+        command => "pip2 install cctrl",
+
+        require => Package[ $installtools ]
     }
 
     # fix a problem with Jenkins Python Plugin, which tries to call python
@@ -24,8 +29,8 @@ class thmcards {
         path    => '/usr/bin/python',
         ensure  => 'link',
         target  => '/usr/bin/python2',
-        
-        require => Package[ $installtools ]
+
+        require => Exec['install-cctrl']
     }
 
     exec { "configure-couchdb" :
@@ -40,7 +45,7 @@ class thmcards {
         enable     => true,
         hasrestart => true,
         hasstatus  => true,
-        
+
         require => Exec['configure-couchdb']
     }
 
@@ -49,36 +54,14 @@ class thmcards {
 
         require => Service['init-couchdb']
     }
-    
+
     exec { "create-views-in-couchdb" :
         cwd     => "/vagrant",
         command => "python2 createviews.py",
 
         require => Exec['check-couchdb-access']
     }
-    
-    exec { "npm-install" :
-        cwd     => "/vagrant",
-        command => "npm install",
 
-        require => Exec['create-views-in-couchdb']
-    }
-    
-    exec { "npm-install-forever" :
-        command => "npm -g install forever",
-
-        require => Exec['npm-install']
-    }
-
-    file { "create-jenkins-directory" :
-        path   => "/home/vagrant/jenkins",
-        ensure => "directory",
-        owner  => "vagrant",
-        group  => "users",
-        
-        require => Exec['npm-install-forever']
-    }
-    
     file { 'create-motd':
         path   => '/etc/motd',
         ensure => present,
@@ -87,8 +70,55 @@ class thmcards {
         mode   => 'u=rw,go=r',
         owner  => 'root',
         source => 'puppet:///modules/motddir/motd',
-        
-        require => File['create-jenkins-directory']
+
+        require => Exec['create-views-in-couchdb']
+    }
+
+    exec { "npm-install" :
+        cwd     => "/vagrant",
+        command => "npm install",
+
+        require => File['create-motd']
+    }
+
+    exec { "npm-install-forever" :
+        command => "npm -g install forever",
+
+        require => Exec['npm-install']
+    }
+
+    exec { "install-jmeter" :
+        command => 'su -c installTools/install-jmeter.py jenkins',
+
+        require => Exec['npm-install-forever']
+    }
+
+    exec { "install-selenium" :
+        command => 'su -c installTools/install-selenium.py jenkins',
+
+        require => Exec['install-jmeter']
+    }
+
+    exec { "configure-vncserver" :
+        command => 'su -c ./configure_vncserver.py jenkins',
+
+        require => Exec['install-selenium']
+    }
+
+    service { "init-jenkins":
+        name       => "jenkins",
+        ensure     => "running",
+        enable     => true,
+        hasrestart => true,
+        hasstatus  => true,
+
+        require => Exec['configure-vncserver']
+    }
+
+    exec { "check-jenkins-access" :
+        command => "python2 check_jenkins_access.py",
+
+        require => Service['init-jenkins']
     }
 
 }
