@@ -11,7 +11,7 @@ class thmcards {
         command => 'bash update_pacman_mirrorlist.sh'
     }
 
-    $installtools = [ "couchdb", "firefox", "jenkins", "junit", "nodejs", "python2-pip", "python2-pexpect", "tigervnc" ]
+    $installtools = [ "couchdb", "firefox", "jenkins", "junit", "nodejs", "python2-pip", "git", "python2-pexpect", "tigervnc" ]
 
     package { [ $installtools ] :
         require => Exec['update-pacman-mirrorlist']
@@ -89,12 +89,14 @@ class thmcards {
 
     exec { "install-jmeter" :
         command => 'su -c installTools/install-jmeter.py jenkins',
+        logoutput => true,
 
         require => Exec['npm-install-forever']
     }
 
     exec { "install-selenium" :
         command => 'su -c installTools/install-selenium.py jenkins',
+        logoutput => true,
 
         require => Exec['install-jmeter']
     }
@@ -104,6 +106,13 @@ class thmcards {
 
         require => Exec['install-selenium']
     }
+    
+    exec { 'configure-cctrl' :
+        command => 'su -c cctrl/configure_cctrl.py jenkins',
+        logoutput => true,
+        
+        require => Exec['configure-vncserver']
+    }
 
     service { "init-jenkins":
         name       => "jenkins",
@@ -112,7 +121,7 @@ class thmcards {
         hasrestart => true,
         hasstatus  => true,
 
-        require => Exec['configure-vncserver']
+        require => Exec['configure-cctrl']
     }
 
     exec { "check-jenkins-access" :

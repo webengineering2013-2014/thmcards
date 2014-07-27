@@ -1,0 +1,11 @@
+The file CLOUDCONTROL.CREDENTIALS must be "next to" the file Vagrantfile and must consist of three lines,
+containing your cloudcontrol.com-credentials:
+<EMAIL>
+<PASSWORD>
+<APPNAME>
+ 
+<APPNAME> will be created during puppet-provisioning and must not already exist!
+It should contain only lowercase letters (and digits if necessary and must probably start with a letter as well).
+Examine the output of Exec[configure-cctrl] during provisioning in order to make sure that the app has been created.
+
+Furthermore a key will be uploaded to your Cloudcontrol-account via "cctrluser key.add" .

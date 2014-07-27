@@ -4,6 +4,18 @@
 # Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
 VAGRANTFILE_API_VERSION = "2"
 
+$script = <<SCRIPT
+if [ -e /vagrant/CLOUDCONTROL.CREDENTIALS ]
+then
+    exit 0
+else
+    echo 'THE ROOT DIRECTORY OF THIS GIT REPOSITORY DOES NOT CONTAIN A CLOUDCONTROL.CREDENTIALS - FILE!' >&2
+    cat /vagrant/WARNING.2
+    echo 'Run "vagrant provision" after creating this file.' >&2
+    exit -1
+fi
+SCRIPT
+
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.box = "thmcards-vagrant"
@@ -13,6 +25,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.network "forwarded_port", guest: 5984, host: 5985
   config.vm.network "forwarded_port", guest: 8090, host: 8091
 
+  config.vm.provision "shell", inline: $script
+  
   config.vm.provision "puppet" do |puppet|
       puppet.manifests_path = "puppet/manifests"
       puppet.module_path = "puppet/modules"

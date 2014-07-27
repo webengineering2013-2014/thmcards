@@ -23,6 +23,6 @@ WARNING: 1.) The virtual machine's OS hasn't been upgraded since its creation.
 
              ( You may need to reboot the system after that. )
 
-         2.) Please take a look at /vagrant/WARNING if you had provisioning
+         2.) Take a look at /vagrant/WARNING.1 if you had provisioning
              problems with puppet and npm!
 
