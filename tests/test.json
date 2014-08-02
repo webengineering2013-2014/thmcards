@@ -1,0 +1,63 @@
+{
+  "type": "script",
+  "seleniumVersion": "2",
+  "formatVersion": 2,
+  "steps": [
+    {
+      "type": "get",
+      "url": "http://weiii2014thmcards.cloudcontrolled.com/login"
+    },
+    {
+      "type": "waitForElementPresent",
+      "locator": {
+        "type": "css selector",
+        "value": ".btn"
+      }
+    },
+    {
+      "type": "clickElement",
+      "locator": {
+        "type": "css selector",
+        "value": ".btn"
+      }
+    },
+    {
+      "type": "waitForElementPresent",
+      "locator": {
+        "type": "css selector",
+        "value": ".glyphicon-chevron-right"
+      }
+    },
+    {
+      "type": "clickElement",
+      "locator": {
+        "type": "css selector",
+        "value": ".glyphicon-chevron-right"
+      }
+    },
+    {
+      "type": "waitForElementPresent",
+      "locator": {
+        "type": "css selector",
+        "value": ".close"
+      }
+    },
+    {
+      "type": "clickElement",
+      "locator": {
+        "type": "css selector",
+        "value": ".close"
+      }
+    },
+    {
+      "type": "verifyTextPresent",
+      "text": "Learn."
+    }
+  ],
+  "data": {
+    "configs": {},
+    "source": "none"
+  },
+  "inputs": [],
+  "timeoutSeconds": 60
+}

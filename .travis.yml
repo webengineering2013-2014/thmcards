@@ -1,0 +1,12 @@
+node_js: 
+- "0.11"
+- "0.10"
+env: 
+  global: 
+  - secure: UD9vLCJRCJR7qGmjU10wOZwMZ97zyEu0ZkpL3IS1+us9f5fCyYq0JwmL1WooF1eLYN/JxcXTMpReG13cHGrbFYhpe8wYmHw5DgcAft/aWuCRXlZEzDguc5ErzdPRylSIf/+e4KAbzcmzJ+mPAKCcYMBLxBS4J1tO+SnsFvah3gI=
+  - secure: JmK9oekeZzJQtz0Jhw3fRpnmyDumXvcfA7AD/Ey5BIJhvNtuYyCItqTZnFXab0B6hMH8f9uvp18C5yUQ/0shKpb8hYhv43Mp4i8BuGGoxai2MTeDv00ee+8cMT0h0vFHR9t/Kz/Yy/DuYCe6BhxsRp9b34jWsWlWVFUjLxqKZ/Q=
+language: node_js
+before_script: 
+  - "npm install -g se-interpreter"
+script: 
+  - "se-interpreter tests/seinterpreter_config.json"
