@@ -6,6 +6,8 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+// Author: Roman Domnich ( workaddr [ at ] yahoo.de )
+
 public class THMcardsTest {
 
 	@Test
@@ -15,7 +17,7 @@ public class THMcardsTest {
 		
 		WebDriverWait wait = new WebDriverWait(w, 20);
 		
-		w.get("http://127.0.0.1:3000");
+		w.get("http://localhost:3000");
 		
 		wait.until(ExpectedConditions.titleContains("THMcards"));
 		

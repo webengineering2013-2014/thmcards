@@ -1,0 +1,17 @@
+# Author: Roman Domnich ( workaddr [ at ] yahoo.de )
+
+import os, sys, pexpect
+
+sys.path.insert(1, os.environ['WORKSPACE'])
+
+import cctrlUtilFuncs
+
+os.chdir('/vagrant')
+
+cctrl = cctrlUtilFuncs.CloudControl()
+
+for action in (' push', ' deploy'):
+    cctrlapp = pexpect.spawn('cctrlapp ' + cctrl.APPNAME + action, timeout=420)
+    cctrlapp.logfile_read = sys.stdout
+
+    cctrl.reactToCctrlToolResponse(cctrlapp)

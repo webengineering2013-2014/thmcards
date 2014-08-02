@@ -1,0 +1,25 @@
+# Author: Roman Domnich ( workaddr [ at ] yahoo.de )
+
+import subprocess, pexpect, time, sys
+
+if subprocess.check_output(['ss','--tcp','-an']).find(':3000') != -1:
+  print('restarting THMcards ...')
+  sys.stdout.flush()
+
+  subprocess.check_call(['forever','stop', 'app.js'])
+
+
+npmUpdate = pexpect.spawn("su -c 'npm install'", timeout=3600)
+npmUpdate.logfile_read = sys.stdout
+
+npmUpdate.expect(r'Passwor\w:')
+npmUpdate.sendline('vagrant')
+
+npmUpdate.expect(pexpect.EOF)
+npmUpdate.close()
+
+
+subprocess.check_call(['forever','start', 'app.js'])
+
+while subprocess.check_output(['ss','--tcp','-an']).find(':3000') == -1:
+  time.sleep(1)

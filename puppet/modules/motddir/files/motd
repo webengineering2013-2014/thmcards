@@ -16,12 +16,8 @@ The app can then be accessed through http://<server-ip>:3000 .
 
 Look at /vagrant/README.md for more details.
 
-WARNING: 1.) The virtual machine's OS hasn't been upgraded since its creation.
-             You can upgrade it like this:
-
-             pacman -Syyu
-
-             ( You may need to reboot the system after that. )
+WARNING: 1.) The virtual machine's OS has been upgraded.
+             You may need to reboot the system because of that.
 
          2.) Take a look at /vagrant/WARNING.1 if you had provisioning
              problems with puppet and npm!

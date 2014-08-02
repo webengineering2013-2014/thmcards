@@ -1,5 +1,7 @@
 #!/usr/bin/env python2
 
+# Author: Roman Domnich ( workaddr [ at ] yahoo.de )
+
 import sys, pexpect, re, cctrlUtilFuncs
 
 CC_TIMEOUT = 420

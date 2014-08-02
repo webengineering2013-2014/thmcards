@@ -1,10 +1,12 @@
 #!/usr/bin/env python2
 
+# Author: Roman Domnich ( workaddr [ at ] yahoo.de )
+
 import subprocess, os, sys, zipfile, StringIO
 
 import xml.etree.ElementTree as ET, re
 
-from installUtilFuncs import edgeString
+from installUtilFuncs import edgeString, immediateSysStdoutWrite
 
 def getNodesByXPath(xpath, prefix):
     fDEVNULL = open(os.devnull, 'wb')
@@ -43,7 +45,7 @@ for k in getNodesByXPath('.//%sContents//%sKey', maxVersionString):
 
 seleniumZipFileURL = 'https://selenium-release.storage.googleapis.com/' + maxVersionString2
 
-sys.stdout.write('\n' + edgeString('DOWNLOADING '+maxVersionString2.replace(maxVersionString, '', 1) + ' TO A FILE IN VOLATILE MEMORY ...') + '\n\n')
+immediateSysStdoutWrite('\n' + edgeString('DOWNLOADING '+maxVersionString2.replace(maxVersionString, '', 1) + ' TO A FILE IN VOLATILE MEMORY ...') + '\n\n')
 
 stringStream = StringIO.StringIO(subprocess.check_output(['curl', seleniumZipFileURL]))
 seleniumZipFile = zipfile.ZipFile(stringStream)
@@ -57,10 +59,11 @@ for k in seleniumZipFile.infolist():
         rootObjectCount += 1
 
 if rootObjectCount == 1:
-    sys.stdout.write('\n' + edgeString('EXTRACTING TO ' + os.getcwd() + '/selenium') + '\n\n')
+    immediateSysStdoutWrite('\n' + edgeString('EXTRACTING TO ' + os.getcwd() + '/selenium') + '\n\n')
     seleniumZipFile.extractall()
 else:
     sys.stderr.write('!! ERROR: '+seleniumZipFileURL+' has an unexpected internal structure. It should contain exactly one root directory and no root files. !!\n\n')
+    sys.stderr.flush()
 
 seleniumZipFile.close()
 stringStream.close()

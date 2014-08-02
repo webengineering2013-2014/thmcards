@@ -1,3 +1,6 @@
+
+# Author: Roman Domnich ( workaddr [ at ] yahoo.de )
+
 NEWMIRRORLIST=/root/mirrorlist
 
 for i in {1..5}

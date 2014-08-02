@@ -1,0 +1,17 @@
+
+# Author: Roman Domnich ( workaddr [ at ] yahoo.de )
+
+rm -rf testthmcards
+mkdir testthmcards
+
+$HOME/apache-jmeter/bin/jmeter -Jjmeter.save.saveservice.output_format=xml -n -t /vagrant/tests/thmcards.jmx -j / -l testthmcards/thmcards_log.jtl
+
+THMCARDSCLASSPATH=.:$(find $HOME/selenium -type f -iname "*.jar" | tr '\n' ':')$(find /usr/share/java -type l -iname "*.jar" | tr '\n' ':')
+
+cd /vagrant/tests
+
+javac -cp $THMCARDSCLASSPATH testthmcards/THMcardsTest.java -d $HOME/jobs/Test/workspace/testthmcards
+
+cd $HOME/jobs/Test/workspace/testthmcards
+
+java -cp $THMCARDSCLASSPATH org.junit.runner.JUnitCore testthmcards.THMcardsTest

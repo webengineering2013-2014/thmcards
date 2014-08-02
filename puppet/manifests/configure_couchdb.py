@@ -1,3 +1,6 @@
+
+# Author: Roman Domnich ( workaddr [ at ] yahoo.de )
+
 from ConfigParser import SafeConfigParser
 
 
