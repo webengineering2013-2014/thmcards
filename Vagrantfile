@@ -6,7 +6,7 @@
 # Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
 VAGRANTFILE_API_VERSION = "2"
 
-puts "Note: The boot and provisioning process may take a long time!"
+puts "Note: If you just started a command like 'vagrant up' or 'vagrant provision' then the boot and provisioning process may take a very long time! Otherwise ignore this message."
 
 $script = <<SCRIPT
 if [ -e /vagrant/CLOUDCONTROL.CREDENTIALS ]

@@ -9,7 +9,7 @@ if subprocess.check_output(['ss','--tcp','-an']).find(':3000') != -1:
   subprocess.check_call(['forever','stop', 'app.js'])
 
 
-npmUpdate = pexpect.spawn("su -c 'npm install'", timeout=3600)
+npmUpdate = pexpect.spawn("su -c 'npm update' vagrant", timeout=3600)
 npmUpdate.logfile_read = sys.stdout
 
 npmUpdate.expect(r'Passwor\w:')
